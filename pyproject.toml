@@ -1,0 +1,48 @@
+[project]
+name = "trisystems-report-generator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.12",
+    "uvicorn>=0.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.11.10",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+    "ALL",
+    "W293",
+    "W391"
+]
+ignore = [
+    "RUF001",
+    "RUF002",
+    "D211",
+    "D212",
+]
+
+# Дополнительные настройки для правил аннотаций типов
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = false  # Запрещает *args: Any, **kwargs: Any
+mypy-init-return = true     # Требует аннотации возвращаемого значения для __init__
+
+[tool.mypy]
+python_version = "3.13"
+strict = true  # Максимально строгая проверка
+disallow_untyped_defs = true  # Требует аннотации для всех функций
+warn_return_any = true  # Предупреждает, если функция возвращает Any
