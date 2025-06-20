@@ -1,6 +1,5 @@
-import datetime
 import zoneinfo
-from datetime import date
+from datetime import date, datetime, time
 from typing import Self
 
 from pydantic import BaseModel, field_validator, model_validator
@@ -50,14 +49,14 @@ class TestInfo(BaseModel):
 
     @model_validator(mode="after")
     def check_age_and_test_date(self) -> Self:
-
         if self.age <= MIN_AGE or self.age > MAX_AGE:
-            error_msg = f"age must be between {MIN_AGE} and {MAX_AGE}"
-            raise ValueError(error_msg)
+            raise ValueError(f"age must be between {MIN_AGE} and {MAX_AGE}")
 
-        if self.test_date > datetime.datetime.now(tz=TZ):
-            error_msg = "date of test cannot be in the future"
-            raise ValueError(error_msg)
+        test_datetime = datetime.combine(self.test_date, time.min).replace(tzinfo=TZ)
+        current_datetime = datetime.now().replace(tzinfo=TZ)
+
+        if test_datetime > current_datetime:
+            raise ValueError("date of test cannot be in the future")
         return self
 
 
